@@ -9,15 +9,12 @@ import argparse
 
 #-------------------------------------------------------------------------------------------------------
 # USER DEFINED INPUTS
-
-VI_truth_file = '/global/cfs/cdirs/desi/sv/vi/TruthTables/truth_table_QSO_v1.2.csv'
-#VI_truth_file  = '/Users/uqtdavi1/Documents/programs/DESI/SV/VI_files/SV0/QSO/output/desi-vi_SV0_QSO_tile68002_night20200315_1_merged.csv'
-
+VI_truth_file = '/Users/tlan/Dropbox/To_share/DESI_VI_truth/truth_table_QSO_v1.2.csv'
 # Define the VI file you want to compare, and the directory you find it in, and the output directory you want to send it to
 VI_file    =  'desi-vi_SV0_QSO_tile68002_night20200315_1_TMD.csv'   # We remove .csv and add e.g. _z.png to print plots for this file
-VI_dir     = '/global/homes/t/tamarad/SV/VI_files/SV0/QSO/'
+VI_dir     = '/Users/tlan/Dropbox/Astro_Research/Projects_plots_notes/2020_DESI_visual_inspect/VI_v1_individual/QSO/'
 #VI_dir     = '/Users/uqtdavi1/Documents/programs/DESI/SV/VI_files/SV0/QSO/'
-output_dir = VI_dir+'VI_check/'  # The directory in which we'll put the output.  If it doesn't exist the program will make it.
+output_dir = VI_dir+'VI_check_all_single/'  # The directory in which we'll put the output.  If it doesn't exist the program will make it.
 
 # Set Compare_Everything_In_Directory to True if you want to do a batch job!  
 # This will ignore the vi file you enter as VI_file above, but uses the directories and truth table.
@@ -166,4 +163,5 @@ else:
 print(vi_files)
 
 for file in vi_files:
+  print(file) 
   compare_vi(VI_dir,file,VI_truth_file,output_dir,oldtruth=use_old_truth_format,oldvi=use_old_vi_format)
