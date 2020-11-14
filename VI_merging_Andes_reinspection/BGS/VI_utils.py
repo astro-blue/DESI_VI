@@ -27,11 +27,11 @@ def read_individual_VI(VI_dir):
         if fnmatch.fnmatch(entry, pattern):
             vi_files.append(entry)
 
-    vi = pd.read_csv(VI_dir + vi_files[0], delimiter = " , ", engine='python')
+    vi = pd.read_csv(VI_dir + vi_files[0], delimiter = ",", engine='python')
 
     for i in range(1,len(vi_files)):
         print(vi_files[i])
-        vi2 = pd.read_csv(VI_dir + vi_files[i], delimiter = " , ", engine='python')
+        vi2 = pd.read_csv(VI_dir + vi_files[i], delimiter = ",", engine='python')
         vi = vi.append(vi2, ignore_index=True)
     
     return vi
