@@ -3,9 +3,6 @@
 import os, sys, glob
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt 
-import fnmatch
-import argparse
 
 
 '''
@@ -19,7 +16,9 @@ your results are in reasonable agreements with the truth tables.
 
 def compare_vi(VI_dir,VI_file,VI_truth_file,output_dir):
   VI_base = VI_file[:-4]  # Get rid of .csv at the end of the filename so we can add .png etc... for figures and output. 
-  #print(VI_file)
+  print('Comparing the results of the following two files')
+  print('Input:', VI_file)
+  print('Truth table:', VI_truth_file)
   # Compare different visual inspections
   t = pd.read_csv(VI_dir+VI_truth_file) #truth (merged) file or file you want to compare to
   v = pd.read_csv(VI_dir+VI_file) #This should work for new prospect files
@@ -27,11 +26,9 @@ def compare_vi(VI_dir,VI_file,VI_truth_file,output_dir):
   # If the VI agreed with Redrock, insert the Redrock results into the VI column.  
   v.loc[pd.isna(v['VI_z']), 'VI_z'] = v.loc[pd.isna(v['VI_z']), 'Redrock_z']
   v['VI_z'] = v['VI_z'].astype(float)
-  print('test')
   v.loc[pd.isna(v['VI_spectype']), 'VI_spectype'] = v.loc[pd.isna(v['VI_spectype']), 'Redrock_spectype']
   # Gather the results by TARGETID, put them all in g, including only those items the VI'er looked at.
   g = v.merge(t,how='inner',on='TARGETID')
-  print(g)
   # Find the disagreements
   i_disagree_z = np.abs(g['VI_z']-g['best_z']) >=0.0033 
   i_disagree_class = abs(g['VI_quality']-g['best_quality']) >= 2  
@@ -57,7 +54,7 @@ def compare_vi(VI_dir,VI_file,VI_truth_file,output_dir):
   print(conflicts[2:])
   #---------------------------------------------------------------------------------------------------------------------------------------- 
 
-  summaryfile = open(output_dir+VI_base+'_results.txt', "w") ####### PRINT OUTPUT TO FILE ########
+  summaryfile = open(output_dir+VI_base+'_comparison_results.txt', "w") ####### PRINT OUTPUT TO FILE ########
   summaryfile.write('\nOut of %s objects, you disagreed with the merged results on %s redshifts, %s qualities, and %s spectypes.'%(len(g['TARGETID']),sum(i_disagree_z),sum(i_disagree_class),sum(i_disagree_spectype)))
   summaryfile.write('\nNumber of redshift disagreements on high-quality redshifts = %s (out of %s).'%(sum(i_disagree_good),sum(i_good_z)))
   summaryfile.write('\nTotal number of disagreements = %s.\n'%sum(i_disagree_all))
@@ -77,9 +74,7 @@ def compare_vi(VI_dir,VI_file,VI_truth_file,output_dir):
 VI_dir = '/Users/tlan/Dropbox/Astro_Research/Projects_plots_notes/2020_DESI_visual_inspect/SV1/ELG_80608/'
 file='desi-vi_ELG_tile80608_nightdeep_1_TWL.csv' # your VI file
 VI_truth_file='ELG_TWL_truth_80608_1.csv' # Insert the corresponding truth table
-output_dir = VI_dir+'/test/'
+output_dir = VI_dir
 
-if not os.path.exists(output_dir):
-  os.makedirs(output_dir)
 
 compare_vi(VI_dir,file,VI_truth_file,output_dir)

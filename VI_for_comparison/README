@@ -1,0 +1,9 @@
+Comparing_your_results_with_truth_table.py
+v1 Ting-Wen Lan
+
+This code is used to make a simple comparison between your VI results with the results in a truth table.
+1. To use it, you need python 3, panda.
+2. Modify the directory, file name, and, the corresponding truth table file name in line 75 and 76
+3. Run the code and it will output a file with filename_comparison_results.txt which will tell you the disagreement between the two files.
+4. Try to understand the differences. 
+5. If you have any questions, feel free to ask in the slack channel #visual_inspection and contact the VI leads. 
