@@ -16,16 +16,16 @@ def string_cleaner(tt):
     tt = tt.replace(',',';')
     return tt
 
-on_nersc = False
+on_nersc = True
 # Set to directory with all the VI files to merge
 if on_nersc:
-  merged_dir = os.environ['HOME']+'/SV/VI_files/SV0/QSO_Andes/output/'
+  merged_dir = os.environ['HOME']+'/projects/VI_files/SV1/ELG/output/'
 else:
   merged_dir = '/Users/uqtdavi1/Documents/programs/DESI/SV/VI_files/SV0/Blanc/BGS/output/'  
 
-tiles = ['80613'] 
-nights = ['20201215']  
-combined_file = merged_dir+"desi-vi_BGS_tile"+tiles[0]+"_nightdeep_merged_all.csv"
+tiles = ['80608'] 
+#nights = ['20201215']  
+combined_file = merged_dir+"desi-vi_ELG_tile"+tiles[0]+"_nightdeep_merged_all.csv"
 
 # Read in list of files in merged directory
 all_files = os.listdir(merged_dir)
@@ -57,7 +57,7 @@ vimerged['merger_comment'] = vimerged['merger_comment'].apply(string_cleaner)
 
 # Print to a combined file
 if on_nersc:
-  vimerged[['TARGETID','Redrock_z', 'best_z', 'best_quality', 'Redrock_spectype', 'best_spectype', 'all_VI_issues', 'all_VI_comments', 'merger_comment','N_VI','DELTACHI2', 'ZWARN', 'ZERR','FIBER','FLUX_G', 'FLUX_R', 'FLUX_Z','FIBERFLUX_G', 'FIBERFLUX_R', 'FIBERFLUX_Z', 'MW_TRANSMISSION_G','MW_TRANSMISSION_R', 'MW_TRANSMISSION_Z']].to_csv(combined_file,index=False)
+  vimerged[['TARGETID','Redrock_z', 'best_z', 'best_quality', 'Redrock_spectype', 'best_spectype', 'all_VI_issues', 'all_VI_comments', 'merger_comment','N_VI','DELTACHI2', 'ZWARN', 'ZERR','FIBER','FLUX_G', 'FLUX_R', 'FLUX_Z','FIBERFLUX_G', 'FIBERFLUX_R', 'FIBERFLUX_Z', 'EBV']].to_csv(combined_file,index=False)
 else:
   vimerged[['TARGETID','Redrock_z', 'best_z', 'best_quality', 'Redrock_spectype', 'best_spectype', 'all_VI_issues', 'all_VI_comments', 'merger_comment','N_VI']].to_csv(combined_file,index=False)
 
