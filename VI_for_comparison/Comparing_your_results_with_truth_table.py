@@ -30,7 +30,7 @@ def compare_vi(VI_dir,VI_file,VI_truth_file,output_dir):
   # Gather the results by TARGETID, put them all in g, including only those items the VI'er looked at.
   g = v.merge(t,how='inner',on='TARGETID')
   # Find the disagreements
-  i_disagree_z = np.abs(g['VI_z']-g['best_z']) >=0.0033 
+  i_disagree_z = (np.abs(g['VI_z']-g['best_z'])/(1.+g['best_z']))>=0.0033 
   i_disagree_class = abs(g['VI_quality']-g['best_quality']) >= 2  
   i_disagree_spectype = g['VI_spectype'] != g['best_spectype']
 
@@ -73,7 +73,7 @@ def compare_vi(VI_dir,VI_file,VI_truth_file,output_dir):
 
 VI_dir = '/Users/tlan/Dropbox/Astro_Research/Projects_plots_notes/2020_DESI_visual_inspect/SV1/ELG_80608/'
 file='desi-vi_ELG_tile80608_nightdeep_1_TWL.csv' # your VI file
-VI_truth_file='ELG_TWL_truth_80608_1.csv' # Insert the corresponding truth table
+VI_truth_file='desi-vi_ELG_tile80608_nightdeep_merged_all.csv' # Insert the corresponding truth table
 output_dir = VI_dir
 
 
