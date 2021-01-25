@@ -36,7 +36,7 @@ tiledir   = '/global/cfs/cdirs/desi/spectro/redux/daily/tiles/'
 tiles = ['80608']
 nights = ['20201223']
 petals = ['0','1','2','4', '5', '6' ,'7', '8', '9']
-subset = "_6_"  # YOU WANT TO CHANGE THIS EACH TIME, it defines "pattern" below.  Set to "" to use all.
+subset = "_11_"  # YOU WANT TO CHANGE THIS EACH TIME, it defines "pattern" below.  Set to "" to use all.
 output_name = "desi-vi_ELG_tile"+tiles[0]+"_nightdeep"+subset+"merged"
 
 # Prep the output files
@@ -82,7 +82,8 @@ vi_conflict = find_conflicts(vi_gp)
 
 # Get the target IDs of the problematic objects and display list that can be read in to Prospect_targetid.ipynb:
 unique_targets = np.unique(vi_conflict['TARGETID'].tolist())
-print_conflicts_for_prospect(unique_targets)
+if len(unique_targets)>=1:
+  print_conflicts_for_prospect(unique_targets)
 
 
 #----------------------------------------------------------------
