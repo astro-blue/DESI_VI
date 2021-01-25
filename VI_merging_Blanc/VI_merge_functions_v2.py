@@ -83,14 +83,24 @@ def read_in_data(VI_dir,tile,subset):
   return vi
 
 def add_auxiliary_data(vi,tiledir,tiles,nights,petals):
-  tf = Table.read(tiledir+'/'+tiles[0] + '/'+nights[0]+'/zbest-'+str(petals[0])+'-'+str(tiles[0])+'-'+nights[0]+'.fits',hdu='FIBERMAP')
-  tspec = Table.read(tiledir+'/'+tiles[0] + '/'+nights[0]+'/zbest-'+str(petals[0])+'-'+str(tiles[0])+'-'+nights[0]+'.fits',hdu='ZBEST')
+  #tf = Table.read(tiledir+'/'+tiles[0] + '/'+nights[0]+'/zbest-'+str(petals[0])+'-'+str(tiles[0])+'-'+nights[0]+'.fits',hdu='FIBERMAP')
+  #tspec = Table.read(tiledir+'/'+tiles[0] + '/'+nights[0]+'/zbest-'+str(petals[0])+'-'+str(tiles[0])+'-'+nights[0]+'.fits',hdu='ZBEST')
+  #for i in range(1,len(petals)):
+  #    tfn = Table.read(tiledir+'/'+tiles[0] + '/'+nights[0]+'/zbest-'+str(petals[i])+'-'+str(tiles[0])+'-'+nights[0]+'.fits',hdu='FIBERMAP')
+  #    tf = vstack([tf,tfn])
+  #    tspecn = Table.read(tiledir+'/'+tiles[0] + '/'+nights[0]+'/zbest-'+str(petals[i])+'-'+str(tiles[0])+'-'+nights[0]+'.fits',hdu='ZBEST')
+  #    tspec = vstack([tspec,tspecn])
+  dataname = tiledir+'/'+tiles[0] + '/deep/zbest-'+str(petals[0])+'-'+str(tiles[0])+'-deep.fits'
+  tf = Table.read(dataname,hdu='FIBERMAP')
+  tspec = Table.read(dataname,hdu='ZBEST')
   for i in range(1,len(petals)):
-      tfn = Table.read(tiledir+'/'+tiles[0] + '/'+nights[0]+'/zbest-'+str(petals[i])+'-'+str(tiles[0])+'-'+nights[0]+'.fits',hdu='FIBERMAP')
+      tfn = Table.read(tiledir+'/'+tiles[0] + '/deep/zbest-'+str(petals[i])+'-'+str(tiles[0])+'-deep.fits',hdu='FIBERMAP')
       tf = vstack([tf,tfn])
-      tspecn = Table.read(tiledir+'/'+tiles[0] + '/'+nights[0]+'/zbest-'+str(petals[i])+'-'+str(tiles[0])+'-'+nights[0]+'.fits',hdu='ZBEST')
+      tspecn = Table.read(tiledir+'/'+tiles[0] + '/deep/zbest-'+str(petals[i])+'-'+str(tiles[0])+'-deep.fits',hdu='ZBEST')
       tspec = vstack([tspec,tspecn])
-      
+            
+  EXPID = list(set(tf['EXPID']))[0]
+  tf = tf[tf['EXPID']==EXPID]
   tf_df = tf['TARGETID','TARGET_RA','TARGET_DEC','FIBER','FLUX_G','FLUX_R','FLUX_Z','FIBERFLUX_G','FIBERFLUX_R','FIBERFLUX_Z','EBV'].to_pandas()
   tspec_df = tspec['TARGETID','DELTACHI2','ZWARN','ZERR'].to_pandas()
   
