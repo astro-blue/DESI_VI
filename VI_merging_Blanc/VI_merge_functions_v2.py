@@ -77,7 +77,7 @@ def read_in_data(VI_dir,tile,subset):
       print(vi_files[i])
       vi2 = pd.read_csv(VI_dir + vi_files[i], delimiter = ",", engine='python', keep_default_na=False)
       vi = vi.append(vi2, ignore_index=True)
-      
+  vi['TILEID']=tile    
   # Change the column name to TARGETID to match standards elsewhere in DESI.
   #vi = vi.rename(columns={"TargetID": "TARGETID"})
   return vi
@@ -144,7 +144,7 @@ def print_conflicts_for_prospect(unique_targets):
   print('Total number of conflicts to resolve: ', len(unique_targets))
 
 def print_merged_file(vi_gp,output_file):
-	vi_gp['Redrock_z', 'best_z', 'best_quality', 'Redrock_spectype', 'best_spectype', 'all_VI_issues', 'all_VI_comments', 'merger_comment','N_VI','DELTACHI2', 'ZWARN', 'ZERR','TARGET_RA','TARGET_DEC','FIBER','FLUX_G', 'FLUX_R', 'FLUX_Z','FIBERFLUX_G', 'FIBERFLUX_R', 'FIBERFLUX_Z', 'EBV'].first().to_csv(output_file)
+	vi_gp['Redrock_z', 'best_z', 'best_quality', 'Redrock_spectype', 'best_spectype', 'all_VI_issues', 'all_VI_comments', 'merger_comment','N_VI','DELTACHI2', 'ZWARN', 'ZERR','TARGET_RA','TARGET_DEC','FIBER','FLUX_G', 'FLUX_R', 'FLUX_Z','FIBERFLUX_G', 'FIBERFLUX_R', 'FIBERFLUX_Z', 'EBV','TILEID'].first().to_csv(output_file)
 
 if __name__ == "__main__":
 	print('What a cool program.')
