@@ -19,21 +19,28 @@ def string_cleaner(tt):
 on_nersc = True
 # Set to directory with all the VI files to merge
 if on_nersc:
-  merged_dir = os.environ['HOME']+'/projects/VI_files/SV1/BGS/output/'
+  merged_dir = os.environ['HOME']+'/projects/VI_files/SV1/ELG/output/'
 else:
   merged_dir = '/Users/uqtdavi1/Documents/programs/DESI/SV/VI_files/SV0/Blanc/BGS/output/'  
 
 tiles = ['80608'] 
 #nights = ['20201215']  
-combined_file = merged_dir+"desi-vi_BGS_tile"+tiles[0]+"_nightdeep_merged_all.csv"
+combined_file = merged_dir+"desi-vi_ELG_tile"+tiles[0]+"_nightdeep_merged_all_210127.csv"
+log_file = merged_dir+"desi-vi_ELG_tile"+tiles[0]+"_nightdeep_merged_all_210127.log"
 
 # Read in list of files in merged directory
+log=open(log_file,'w')
+log.write('#Log file for'+combined_file+'\n')
 all_files = os.listdir(merged_dir)
 merged_files=[]
 pattern = "desi*"+tiles[0]+"*merged.csv"
 for entry in all_files:
   if fnmatch.fnmatch(entry, pattern):
     merged_files.append(entry)
+    log.write(entry+'\n')
+
+    
+    
 print(merged_files)
 print(combined_file)
 
@@ -44,12 +51,15 @@ vimerged = pd.read_csv(merged_dir + merged_files[0], delimiter = ",", engine='py
 for i in range(1,len(merged_files)):
     print(merged_files[i])
     vi2 = pd.read_csv(merged_dir + merged_files[i], delimiter = ",", engine='python',keep_default_na=False)
+    
     vimerged = vimerged.append(vi2, ignore_index=True)
 
 print(vimerged['all_VI_comments'])
 # Get rid of evil characters
 vimerged['all_VI_comments'] = vimerged['all_VI_comments'].apply(string_cleaner)
 vimerged['merger_comment'] = vimerged['merger_comment'].apply(string_cleaner)
+#vimerged['TILEID']=int(tiles[0])
+#vimerged['N_VI']=int(2)
 
 #for i in np.arange(len(vimerged['TARGETID'])):
 #  print(vimerged.loc[i]['all_VI_comments'])
@@ -57,9 +67,11 @@ vimerged['merger_comment'] = vimerged['merger_comment'].apply(string_cleaner)
 
 # Print to a combined file
 if on_nersc:
-  vimerged[['TARGETID','Redrock_z', 'best_z', 'best_quality', 'Redrock_spectype', 'best_spectype', 'all_VI_issues', 'all_VI_comments', 'merger_comment','N_VI','DELTACHI2', 'ZWARN', 'ZERR','FIBER','FLUX_G', 'FLUX_R', 'FLUX_Z','FIBERFLUX_G', 'FIBERFLUX_R', 'FIBERFLUX_Z', 'EBV']].to_csv(combined_file,index=False)
+  vimerged[['TARGETID','Redrock_z', 'best_z', 'best_quality', 'Redrock_spectype', 'best_spectype', 'all_VI_issues', 'all_VI_comments', 'merger_comment','N_VI','DELTACHI2', 'ZWARN', 'ZERR','FIBER','FLUX_G', 'FLUX_R', 'FLUX_Z','FIBERFLUX_G', 'FIBERFLUX_R', 'FIBERFLUX_Z', 'EBV','TILEID']].to_csv(combined_file,index=False)
 else:
   vimerged[['TARGETID','Redrock_z', 'best_z', 'best_quality', 'Redrock_spectype', 'best_spectype', 'all_VI_issues', 'all_VI_comments', 'merger_comment','N_VI']].to_csv(combined_file,index=False)
 
 vitest = pd.read_csv(combined_file,keep_default_na=False)
 print(vitest)
+log.write('# Number of objects %0.0f' % len(vitest))
+log.close()
