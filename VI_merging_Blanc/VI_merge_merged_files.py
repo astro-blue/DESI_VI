@@ -23,10 +23,10 @@ if on_nersc:
 else:
   merged_dir = '/Users/uqtdavi1/Documents/programs/DESI/SV/VI_files/SV0/Blanc/BGS/output/'  
 
-tiles = ['80609'] 
+tiles = ['80605'] 
 #nights = ['20201215']  
-combined_file = merged_dir+"desi-vi_LRG_tile"+tiles[0]+"_nightdeep_merged_all_21030.csv"
-log_file = merged_dir+"desi-vi_LRG_tile"+tiles[0]+"_nightdeep_merged_all_210130.log"
+combined_file = merged_dir+"desi-vi_LRG_tile"+tiles[0]+"_nightdeep_merged_all_210224.csv"
+log_file = merged_dir+"desi-vi_LRG_tile"+tiles[0]+"_nightdeep_merged_all_210224.log"
 
 # Read in list of files in merged directory
 log=open(log_file,'w')
@@ -58,8 +58,9 @@ print(vimerged['all_VI_comments'])
 # Get rid of evil characters
 vimerged['all_VI_comments'] = vimerged['all_VI_comments'].apply(string_cleaner)
 vimerged['merger_comment'] = vimerged['merger_comment'].apply(string_cleaner)
-#vimerged['TILEID']=int(tiles[0])
-#vimerged['N_VI']=int(2)
+vimerged['TILEID']=int(tiles[0])
+#search = np.where(vimerged['N_VI']>3)
+#vimerged['N_VI'][vimerged['N_VI']>3]=int(2)
 
 #for i in np.arange(len(vimerged['TARGETID'])):
 #  print(vimerged.loc[i]['all_VI_comments'])

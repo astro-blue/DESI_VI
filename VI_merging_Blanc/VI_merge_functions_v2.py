@@ -77,7 +77,7 @@ def read_in_data(VI_dir,tile,subset):
       print(vi_files[i])
       vi2 = pd.read_csv(VI_dir + vi_files[i], delimiter = ",", engine='python', keep_default_na=False)
       vi = vi.append(vi2, ignore_index=True)
-  vi['TILEID']=tile    
+  #vi['TILEID']=tile    
   # Change the column name to TARGETID to match standards elsewhere in DESI.
   #vi = vi.rename(columns={"TargetID": "TARGETID"})
   return vi
@@ -101,11 +101,16 @@ def add_auxiliary_data(vi,tiledir,tiles,nights,petals):
             
   EXPID = list(set(tf['EXPID']))[0]
   tf = tf[tf['EXPID']==EXPID]
-  tf_df = tf['TARGETID','TARGET_RA','TARGET_DEC','FIBER','FLUX_G','FLUX_R','FLUX_Z','FIBERFLUX_G','FIBERFLUX_R','FIBERFLUX_Z','EBV'].to_pandas()
-  tspec_df = tspec['TARGETID','DELTACHI2','ZWARN','ZERR'].to_pandas()
-  
-  vi = vi.merge(tf_df, how='left', on='TARGETID')
-  vi = vi.merge(tspec_df, how='left', on='TARGETID')
+  #tf_df = tf['TARGETID','TARGET_RA','TARGET_DEC','FIBER','FLUX_G','FLUX_R','FLUX_Z','FIBERFLUX_G','FIBERFLUX_R','FIBERFLUX_Z','EBV'].to_pandas()
+  tf_df = tf.to_pandas()
+  tspec_df = tspec['TARGETID','DELTACHI2','ZWARN','ZERR','CHI2','NPIXELS'].to_pandas()
+  for i_coeff in range(0,10):
+    tspec_df['COEFF_'+str(i_coeff)]=tspec['COEFF'].T[i_coeff]
+  vi = vi.merge(tf_df, how='left', on='TARGETID',suffixes=('', '_y'))
+  vi = vi.merge(tspec_df, how='left', on='TARGETID',suffixes=('', '_y'))
+  print(len(vi.columns))
+  vi.drop(vi.filter(regex='_y$').columns.tolist(),axis=1, inplace=True)  
+  print(len(vi.columns))
   return vi
 
 def find_conflicts(vi_gp):
