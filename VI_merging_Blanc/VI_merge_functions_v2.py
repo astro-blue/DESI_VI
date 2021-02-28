@@ -99,7 +99,8 @@ def add_auxiliary_data(vi,tiledir,tiles,nights,petals):
       tspecn = Table.read(tiledir+'/'+tiles[0] + '/deep/zbest-'+str(petals[i])+'-'+str(tiles[0])+'-deep.fits',hdu='ZBEST')
       tspec = vstack([tspec,tspecn])
             
-  EXPID = list(set(tf['EXPID']))[0]
+  EXPID = list(set(tf['EXPID']))[-1] 
+  '''This was 0 before but  '''
   tf = tf[tf['EXPID']==EXPID]
   #tf_df = tf['TARGETID','TARGET_RA','TARGET_DEC','FIBER','FLUX_G','FLUX_R','FLUX_Z','FIBERFLUX_G','FIBERFLUX_R','FIBERFLUX_Z','EBV'].to_pandas()
   tf_df = tf.to_pandas()
