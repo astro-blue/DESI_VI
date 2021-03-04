@@ -71,9 +71,9 @@ def compare_vi(VI_dir,VI_file,VI_truth_file,output_dir):
 #------------------------------------------------------------------
 # Run the comparison
 
-VI_dir = '/Users/tlan/Dropbox/Astro_Research/Projects_plots_notes/2020_DESI_visual_inspect/SV1/ELG_80608/'
-file='desi-vi_ELG_tile80608_nightdeep_1_TWL.csv' # your VI file
-VI_truth_file='desi-vi_ELG_tile80608_nightdeep_merged_all.csv' # Insert the corresponding truth table
+VI_dir = '/Users/tlan/Dropbox/Astro_Research/Projects_plots_notes/2020_DESI_visual_inspect/SV1/BGS_80613/'
+file='desi-vi_BGS_ANY_tile80613_nightdeep_2_TWL.csv' # your VI file
+VI_truth_file='desi-vi_BGS_tile80613_nightdeep_merged_all.csv' # Insert the corresponding truth table
 output_dir = VI_dir
 
 
