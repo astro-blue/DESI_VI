@@ -19,14 +19,14 @@ def string_cleaner(tt):
 on_nersc = True
 # Set to directory with all the VI files to merge
 if on_nersc:
-  merged_dir = os.environ['HOME']+'/projects/VI_files/SV1/LRG/output/'
+  merged_dir = os.environ['HOME']+'/projects/VI_files/SV1/ELG/output/'
 else:
   merged_dir = '/Users/uqtdavi1/Documents/programs/DESI/SV/VI_files/SV0/Blanc/BGS/output/'  
 
-tiles = ['80605'] 
+tiles = ['80610'] 
 #nights = ['20201215']  
-combined_file = merged_dir+"desi-vi_LRG_tile"+tiles[0]+"_nightdeep_merged_all_210224.csv"
-log_file = merged_dir+"desi-vi_LRG_tile"+tiles[0]+"_nightdeep_merged_all_210224.log"
+combined_file = merged_dir+"desi-vi_ELG_tile"+tiles[0]+"_nightdeep_merged_all_210308.csv"
+log_file = merged_dir+"desi-vi_ELG_tile"+tiles[0]+"_nightdeep_merged_all_210308.log"
 
 # Read in list of files in merged directory
 log=open(log_file,'w')
