@@ -27,17 +27,17 @@ if on_nersc:
 #--------------------------------------------------------------------------------------------------
 if on_nersc:  
   # Set to directory with all the VI files to merge
-  VI_dir = os.environ['HOME']+'/projects/VI_files/SV1/ELG/'
+  VI_dir = os.environ['HOME']+'/projects/VI_files/Cascades/BGS/'
 else:
   VI_dir = '/Users/uqtdavi1/Documents/programs/DESI/SV/VI_files/SV0/Blanc/BGS/'
 
 # Here you need to choose the tiles on which your objects were observed
 tiledir   = '/global/cfs/cdirs/desi/spectro/redux/blanc/tiles/'
-tiles = ['80610']
-nights = ['20201223']
+id = ['9']
+#nights = ['20201223']
 petals = ['0','1','2','3','4', '5', '6' ,'7', '8', '9']
-subset = "_14_"  # YOU WANT TO CHANGE THIS EACH TIME, it defines "pattern" below.  Set to "" to use all.
-output_name = "desi-vi_ELG_tile"+tiles[0]+"_nightdeep"+subset+"merged"
+subset = "sel1"  # YOU WANT TO CHANGE THIS EACH TIME, it defines "pattern" below.  Set to "" to use all.
+output_name = "desi-vi_SV_subsample_BGS_"+subset+"_"+id[0]+'_merged'
 
 # Prep the output files
 output_file = VI_dir+'output/'+output_name+'.csv'
@@ -50,7 +50,7 @@ log_file = VI_dir+'output/'+output_name+'.log'
 # Read in all the data and combine the files ready for merging
 #--------------------------------------------------------------------------------------------------
 # Read in the data
-vi = read_in_data(VI_dir,tiles[0],subset)
+vi = read_in_data_cascades(VI_dir,subset,id[0])
 
 #make groups of visual inspections, grouped by unique objects, and state number of single and multiple VIs
 vi_gp = vi.groupby(['TARGETID'])
@@ -60,8 +60,8 @@ print('There are ' + str(len(vi)) + ' visual inspections of a total of ' + str(l
 # Add extra data from zbest and fibermap files
 # Add: fiberID, delta_chi2, flux information, MW transmission
 # read in fibermap info, loop over the files for all the petals
-if on_nersc:
-  vi = add_auxiliary_data(vi,tiledir,tiles,nights,petals)
+#if on_nersc:
+#  vi = add_auxiliary_data(vi,tiledir,tiles,nights,petals)
 
 #----------------------------------------------------------------
 # ### Adding useful columns.  Automatically decide on best_z, spectype, and quality where possible.  Concatenate issues and comments.

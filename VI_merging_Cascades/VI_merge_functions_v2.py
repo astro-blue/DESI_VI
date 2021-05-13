@@ -81,6 +81,35 @@ def read_in_data(VI_dir,tile,subset):
   # Change the column name to TARGETID to match standards elsewhere in DESI.
   #vi = vi.rename(columns={"TargetID": "TARGETID"})
   return vi
+def read_in_data_cascades(VI_dir,tile,subset):
+  # We will read all the *.csv files in this directory. Change as needed.
+  all_files = os.listdir(VI_dir)
+  vi_files=[]
+
+  # Choose a subset
+  pattern = "desi*"+tile+"*"+"_"+subset+"_"+"*.csv"
+  for entry in all_files:
+    if fnmatch.fnmatch(entry, pattern):
+      vi_files.append(entry)
+
+  # Make sure the path exists to write the output file
+  if not os.path.exists(VI_dir+'output'):
+    os.makedirs(VI_dir+'output')
+
+  # Read the first file in to vi to set up vi
+  print('VI Files:')
+  print(vi_files[0])
+  vi = pd.read_csv(VI_dir + vi_files[0], delimiter = ",", engine='python', keep_default_na=False)
+
+  # Read in the rest of the files and append them to vi
+  for i in range(1,len(vi_files)):
+      print(vi_files[i])
+      vi2 = pd.read_csv(VI_dir + vi_files[i], delimiter = ",", engine='python', keep_default_na=False)
+      vi = vi.append(vi2, ignore_index=True)
+  #vi['TILEID']=tile    
+  # Change the column name to TARGETID to match standards elsewhere in DESI.
+  #vi = vi.rename(columns={"TargetID": "TARGETID"})
+  return vi
 
 def add_auxiliary_data(vi,tiledir,tiles,nights,petals):
   #tf = Table.read(tiledir+'/'+tiles[0] + '/'+nights[0]+'/zbest-'+str(petals[0])+'-'+str(tiles[0])+'-'+nights[0]+'.fits',hdu='FIBERMAP')
@@ -150,7 +179,8 @@ def print_conflicts_for_prospect(unique_targets):
   print('Total number of conflicts to resolve: ', len(unique_targets))
 
 def print_merged_file(vi_gp,output_file):
-	vi_gp['Redrock_z', 'best_z', 'best_quality', 'Redrock_spectype', 'best_spectype', 'all_VI_issues', 'all_VI_comments', 'merger_comment','N_VI','DELTACHI2', 'ZWARN', 'ZERR','TARGET_RA','TARGET_DEC','FIBER','FLUX_G', 'FLUX_R', 'FLUX_Z','FIBERFLUX_G', 'FIBERFLUX_R', 'FIBERFLUX_Z', 'EBV','TILEID'].first().to_csv(output_file)
+#	vi_gp['Redrock_z', 'best_z', 'best_quality', 'Redrock_spectype', 'best_spectype', 'all_VI_issues', 'all_VI_comments', 'merger_comment','N_VI','DELTACHI2', 'ZWARN', 'ZERR','TARGET_RA','TARGET_DEC','FIBER','FLUX_G', 'FLUX_R', 'FLUX_Z','FIBERFLUX_G', 'FIBERFLUX_R', 'FIBERFLUX_Z', 'EBV','TILEID'].first().to_csv(output_file)
+	vi_gp['Redrock_z', 'best_z', 'best_quality', 'Redrock_spectype', 'best_spectype', 'all_VI_issues', 'all_VI_comments', 'merger_comment','N_VI','Redrock_deltachi2', 'TILEID'].first().to_csv(output_file)
 
 if __name__ == "__main__":
 	print('What a cool program.')

@@ -19,21 +19,21 @@ def string_cleaner(tt):
 on_nersc = True
 # Set to directory with all the VI files to merge
 if on_nersc:
-  merged_dir = os.environ['HOME']+'/projects/VI_files/SV1/ELG/output/'
+  merged_dir = os.environ['HOME']+'/projects/VI_files/Cascades/BGS/output/'
 else:
   merged_dir = '/Users/uqtdavi1/Documents/programs/DESI/SV/VI_files/SV0/Blanc/BGS/output/'  
 
-tiles = ['80610'] 
+tiles = ['sel1'] 
 #nights = ['20201215']  
-combined_file = merged_dir+"desi-vi_ELG_tile"+tiles[0]+"_nightdeep_merged_all_210308.csv"
-log_file = merged_dir+"desi-vi_ELG_tile"+tiles[0]+"_nightdeep_merged_all_210308.log"
+combined_file = merged_dir+"desi-vi_SV_subsample_BGS_"+tiles[0]+"_all_210513.csv"
+log_file = merged_dir+"desi-vi_SV_subsample_BGS_"+tiles[0]+"_all_210513.log"
 
 # Read in list of files in merged directory
 log=open(log_file,'w')
 log.write('#Log file for'+combined_file+'\n')
 all_files = os.listdir(merged_dir)
 merged_files=[]
-pattern = "desi*"+tiles[0]+"*merged.csv"
+pattern = "desi*"+tiles[0]+"*_merged.csv"
 for entry in all_files:
   if fnmatch.fnmatch(entry, pattern):
     merged_files.append(entry)
@@ -58,7 +58,7 @@ print(vimerged['all_VI_comments'])
 # Get rid of evil characters
 vimerged['all_VI_comments'] = vimerged['all_VI_comments'].apply(string_cleaner)
 vimerged['merger_comment'] = vimerged['merger_comment'].apply(string_cleaner)
-vimerged['TILEID']=int(tiles[0])
+#vimerged['TILEID']=int(tiles[0])
 #search = np.where(vimerged['N_VI']>3)
 #vimerged['N_VI'][vimerged['N_VI']>3]=int(2)
 
@@ -68,7 +68,7 @@ vimerged['TILEID']=int(tiles[0])
 
 # Print to a combined file
 if on_nersc:
-  vimerged[['TARGETID','Redrock_z', 'best_z', 'best_quality', 'Redrock_spectype', 'best_spectype', 'all_VI_issues', 'all_VI_comments', 'merger_comment','N_VI','DELTACHI2', 'ZWARN', 'ZERR','TARGET_RA','TARGET_DEC','FIBER','FLUX_G', 'FLUX_R', 'FLUX_Z','FIBERFLUX_G', 'FIBERFLUX_R', 'FIBERFLUX_Z', 'EBV','TILEID']].to_csv(combined_file,index=False)
+  vimerged[['TARGETID','Redrock_z', 'best_z', 'best_quality', 'Redrock_spectype', 'best_spectype', 'all_VI_issues', 'all_VI_comments', 'merger_comment','N_VI','Redrock_deltachi2','TILEID']].to_csv(combined_file,index=False)
 else:
   vimerged[['TARGETID','Redrock_z', 'best_z', 'best_quality', 'Redrock_spectype', 'best_spectype', 'all_VI_issues', 'all_VI_comments', 'merger_comment','N_VI']].to_csv(combined_file,index=False)
 
