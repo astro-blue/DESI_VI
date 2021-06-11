@@ -27,17 +27,17 @@ if on_nersc:
 #--------------------------------------------------------------------------------------------------
 if on_nersc:  
   # Set to directory with all the VI files to merge
-  VI_dir = os.environ['HOME']+'/projects/VI_files/Cascades/BGS/'
+  VI_dir = os.environ['HOME']+'/projects/VI_files/Cascades/ELG/'
 else:
   VI_dir = '/Users/uqtdavi1/Documents/programs/DESI/SV/VI_files/SV0/Blanc/BGS/'
 
 # Here you need to choose the tiles on which your objects were observed
 tiledir   = '/global/cfs/cdirs/desi/spectro/redux/blanc/tiles/'
-id = ['9']
+id = ['4']
 #nights = ['20201223']
 petals = ['0','1','2','3','4', '5', '6' ,'7', '8', '9']
-subset = "sel1"  # YOU WANT TO CHANGE THIS EACH TIME, it defines "pattern" below.  Set to "" to use all.
-output_name = "desi-vi_SV_subsample_BGS_"+subset+"_"+id[0]+'_merged'
+subset = "sel2"  # YOU WANT TO CHANGE THIS EACH TIME, it defines "pattern" below.  Set to "" to use all.
+output_name = "desi-vi_SV_subsample_ELG_"+subset+"_"+id[0]+'_merged'
 
 # Prep the output files
 output_file = VI_dir+'output/'+output_name+'.csv'
